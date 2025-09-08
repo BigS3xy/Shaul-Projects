@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sushi Place</title>
+  <style>
+    body {
+      background-color: #f1f4f6;
+      
+      font-family: Arial;
+      margin: 0;
+      padding: 0;
+      color: #333;
+      text-align: center;
+    }
+
+    header {
+      background-color: #ffffff;
+      padding: 20px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    h1 {
+      margin: 10px 0 0;
+      color: #2d3e50;
+      
+    }
+
+    .main-image {
+      width: 100%;
+      max-height: 300px;
+      object-fit: cover;
+    }
+
+    .description {
+      padding: 30px;
+      font-size: 18px;
+      max-width: 700px;
+      margin: auto;
+      color: #444;
+    }
+
+    .buttons {
+      margin: 20px;
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    .restaurant-button {
+      background-color: #f1674c;
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 8px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+      text-decoration: none;
+    }
+
+    .restaurant-button:hover {
+      background-color: #e1593d;
+    }
+  </style>
+</head>
+
+<body>
+
+  <header>
+    <h1>Sushi Place</h1>
+  </header>
+
+  <main>
+    <img class="main-image"
+      src="https://images.squarespace-cdn.com/content/v1/63f52cb70db2e54d5c3fa9c6/fd088cf1-c2d9-4f1d-b179-72286bba52b1/IMG_6093.jpg2"
+      alt="מסעדת סושי">
+
+    <div class="description">
+      מסעדת סושי עם תפריט עשיר של רולים יצירתיים, סשימי איכותי ונגיעה מודרנית למטבח היפני הקלאסי
+    </div>
+
+    <div class="buttons">
+      <a href="sushiMenu.html" class="restaurant-button">תפריט</a>
+      <a href="../reservation.html" class="restaurant-button">הזמנת מקום</a>
+      <a href="aboutSushi.html" class="restaurant-button">אודות</a>
+    </div>
+  </main>
+
+</body>
+
+</html>

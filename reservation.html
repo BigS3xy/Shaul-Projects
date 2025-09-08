@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>reservation</title>
+    <style>
+        body {
+        background-color: #f1efefed;
+        font-family: Arial;
+        text-align: center;
+        margin: 0;
+        padding: 0;
+        }
+
+        h1 {
+        color: #56391b;
+        margin-top: 15px;
+        font-size: 25px;
+        }
+
+        .login-button {
+        display: block;
+        margin: 10px auto;
+        background-color: #f1674c;
+        color: white;
+        border: none;
+        padding: 8px 20px;
+        border-radius: 8px;
+        font-size: 14px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+        }
+
+        .login-button:hover {
+        background-color: #d7553b;
+        }
+
+        form {
+        background-color: white;
+        max-width: 500px;
+        margin: 20px auto;
+        padding: 20px;
+        border-radius: 12px;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        text-align: right;
+        font-size: 14px;
+        }
+
+        label {
+        display: block;
+        margin-bottom: 4px;
+        font-weight: bold;
+        color: #333;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="tel"],
+        input[type="number"],
+        input[type="date"],
+        textarea {
+        width: 100%;
+        padding: 6px;
+        margin-bottom: 12px;
+        border-radius: 6px;
+        border: 1px solid #ccc;
+        font-size: 14px;
+        box-sizing: border-box;
+        }
+
+        textarea {
+        resize: vertical;
+        min-height: 40px;
+        }
+    </style>
+    </head>
+    <body>
+
+    <header>
+        <h1>הזמן מקום</h1>
+    </header>
+
+    <main>
+        <form>
+        <label for="fullname">שם מלא</label>
+        <input type="text" id="fullname" required>
+
+        <label for="phone">טלפון</label>
+        <input type="tel" id="phone" required>
+
+        <label for="email">אימייל</label>
+        <input type="email" id="email">
+
+        <label for="guests">מספר סועדים</label>
+        <input type="number" id="guests" min="1">
+
+        <label for="date">תאריך</label>
+        <input type="text" id="date" placeholder="YYYY-MM-DD" style="text-align: right;">
+
+        <label for="notes">הערות</label>
+        <textarea id="notes"></textarea>
+
+        <button type="submit" class="login-button">שלח</button>
+        </form>
+    </main>
+
+</body>
+</html>

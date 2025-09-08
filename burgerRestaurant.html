@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Burger House</title>
+    <style>
+        body {
+            background-color: #252220;
+            font-family: Arial;
+            margin: 0;
+            padding: 0;
+            color: #3b3b3b;
+            text-align: center;
+        }
+
+        header {
+            background-color: #373430;
+            padding: 20px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            margin: 10px 0 0;
+            color: #f5deb3;
+        }
+
+        .main-image {
+            width: 100%;
+            max-height: 300px;
+            object-fit: cover;
+        }
+
+        .description {
+            padding: 30px;
+            font-size: 18px;
+            max-width: 700px;
+            margin: auto;
+            color: #e0e0e0;
+        }
+
+        .buttons {
+            margin: 20px;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .restaurant-button {
+            background-color: #f1674c;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            text-decoration: none;
+        }
+
+        .restaurant-button:hover {
+            background-color: #c84f36;
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <h1>Burger House</h1>
+    </header>
+
+    <main>
+        <img class="main-image" src="https://visit2israel.com/wp-content/uploads/2023/05/100-2023-05-04T125703.863.webp"
+            alt="מסעדת המבורגרים">
+
+        <div class="description">
+            מסעדת המבורגרים עם תפריט מגוון של בשרים איכותיים, תוספות מיוחדות ואווירה צעירה וטעימה במיוחד
+        </div>
+
+        <div class="buttons">
+            <a href="burgerMenu.html" class="restaurant-button">תפריט</a>
+            <a href="../reservation.html" class="restaurant-button">הזמנת מקום</a>
+            <a href="aboutBurger.html" class="restaurant-button">אודות</a>
+        </div>
+
+    </main>
+
+</body>
+
+</html>

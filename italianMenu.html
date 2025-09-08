@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>תפריט</title>
+  <style>
+    body {
+      background-color: #e7ded2;
+      font-family: Arial;
+      margin: 0;
+      padding: 0;
+      color: #1a1919;
+    }
+
+    header {
+      background-color: #e7ded2;
+      padding: 20px;
+      text-align: center;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    h1 {
+      margin: 0;
+      color: #56391b;
+      font-size: 26px;
+    }
+
+    .menu-section {
+      max-width: 800px;
+      margin: 20px auto;
+      padding: 0 15px;
+    }
+
+    h2 {
+      color: #56391b;
+      border-bottom: 1px solid #ccc;
+      padding-bottom: 5px;
+      margin: 25px 0 10px;
+    }
+
+    .menu-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 12px;
+      background-color: #fff;
+      padding: 8px;
+      border-radius: 10px;
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+      position: relative;
+    }
+
+
+
+    .menu-item img {
+      width: 80px;
+      height: 80px;
+      object-fit: cover;
+      border-radius: 8px;
+      margin-left: 12px;
+    }
+
+    .item-info {
+      flex: 1;
+      margin-left: 10px;
+    }
+
+    .item-info h3 {
+      margin: 0;
+      font-size: 16px;
+      color: #3b3b3b;
+    }
+
+    .item-info p {
+      margin: 4px 0 0;
+      font-size: 13px;
+      color: #666;
+    }
+
+    .item-price {
+      font-weight: bold;
+      color: #f1674c;
+      font-size: 14px;
+      margin-left: 10px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .original-price {
+      font-size: 12px;
+      color: #999;
+      text-decoration: line-through;
+      margin-bottom: 2px;
+    }
+
+    .discounted-price {
+      font-size: 14px;
+      color: #f1674c;
+      font-weight: bold;
+    }
+
+    .cart {
+      max-width: 800px;
+      margin: 20px auto;
+      padding: 10px;
+      background: #fff;
+      border-radius: 10px;
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .cart ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    .cart li {
+      display: flex;
+      justify-content: space-between;
+      margin: 6px 0;
+    }
+
+    button {
+      background-color: #f1674c;
+      color: white;
+      border: none;
+      padding: 6px 12px;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    button:hover {
+      background-color: #d24d36;
+    }
+
+    .discount-table {
+      max-width: 800px;
+      width: 100%;
+      margin: 20px auto;
+      border-collapse: collapse;
+      font-size: 15px;
+      background-color: #fff;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .discount-table th,
+    .discount-table td {
+      padding: 12px 15px;
+      text-align: center;
+      border-bottom: 1px solid #eee;
+    }
+
+    .discount-table th {
+      background-color: #f1674c;
+      color: white;
+      font-weight: bold;
+    }
+
+    .discount-table tr:last-child td {
+      border-bottom: none;
+    }
+
+    .discount-table tr:hover {
+      background-color: #f9f9f9;
+    }
+
+    .discount-table td {
+      background-color: #fff;
+    }
+
+    .discount-table button {
+      padding: 6px 12px;
+      background-color: #f1674c;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 13px;
+      transition: 0.3s;
+    }
+
+    .discount-table button:hover {
+      background-color: #d24d36;
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <h1>תפריט</h1>
+  </header>
+
+  <div class="menu-section">
+
+    <table class="discount-table">
+      <thead>
+        <tr>
+          <th>שם מנה</th>
+          <th>מחיר</th>
+          <th>הנחה</th>
+          <th>קבלת הנחה</th>
+        </tr>
+      </thead>
+      <tbody id="discount-table-body"></tbody>
+    </table>
+  </div>
+
+  <div id="meal-list"></div>
+
+  <div class="menu-section" id="menu-container"></div>
+
+  <div class="cart">
+    <h2>🛒 סל קניות</h2>
+    <ul id="cart-list"></ul>
+    <p>סה"כ: ₪<span id="total">0</span></p>
+    <button onclick="clearCart()">רוקן סל</button>
+  </div>
+
+  <div style="text-align: center; margin: 20px;">
+    <a href="addMeal_italian.html" style="
+      display: inline-block;
+      background-color: #f1674c;
+      color: white;
+      padding: 10px 20px;
+      font-size: 14px;
+      border-radius: 6px;
+      text-decoration: none;
+      transition: 0.3s;
+    ">הוספת מנה לתפריט</a>
+  </div>
+
+  <script>
+    const cartKey = "italian_cart";
+    const newMealsKey = "italian_restaurant_meals";
+    let cart = JSON.parse(localStorage.getItem(cartKey)) || [];
+    let dbMeals = [];
+
+    const staticMenu = [
+      {
+        category: "מנות ראשונות",
+        items: [
+          {
+            name: "פוקצ'ת הבית",
+            description: "פוקצ'ה אפויה בתנור לצד שמן זית, סלסת עגבניות ובלסמי",
+            price: 28,
+            image: "https://img.mako.co.il/2019/05/19/shutterstock_217221619_c.jpg"
+          },
+          {
+            name: "ארנצ'יני",
+            description: "כדורי ריזוטו בציפוי פריך, במילוי מוצרלה על רוטב רוזה",
+            price: 30,
+            image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTZOxw39-VOiQ-NIUUqa-okCJwnotOrgG7Rfg&s2"
+          }
+        ]
+      },
+      {
+        category: "מנות עיקריות",
+        items: [
+          {
+            name: "פסטה רוזה",
+            description: "פסטה לבחירה עם רוטב רוזה וגבינות",
+            price: 56,
+            image: "https://cdn.goodlifetv.co.il/wp-content/uploads/2021/10/09184416/Untitled-5.jpg"
+          },
+          {
+            name: "פיצה מרגריטה",
+            description: "פיצה עם רוטב עגבניות, מוצרלה ובזיליקום עם תוספות לבחירה",
+            price: 60,
+            image: "https://cdn.goodlifetv.co.il/wp-content/uploads/2022/07/18141942/AdobeStock_151044953.jpg"
+          }
+        ]
+      },
+      {
+        category: "קינוחים",
+        items: [
+          {
+            name: "טירמיסו",
+            description: "שכבות של ביסקוטי ספוגות באספרסו איטלקי עם קרם מסקרפונה עשיר ואבקת קקאו",
+            price: 49,
+            image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT-VTn8kr8vqAEgT1vT4dMFcSdBw167UmlFDA&s1"
+          },
+          {
+            name: "קרם ברולה",
+            description: "קרם של וניל ודבש, עם טוויל שקדים, טראפל אגוזים ומסקרפונה",
+            price: 51,
+            image: "https://i.pinimg.com/736x/57/02/68/570268f903c15f2857f8eb29d81cc3f7.jpg"
+          }
+        ]
+      },
+      {
+        category: "שתייה",
+        items: [
+          {
+            name: "שתיה קלה",
+            description: "לבחירה",
+            price: 10,
+            image: "https://mosheamar.co.il/wp-content/uploads/2022/06/iced-cola-glass-1.jpg"
+          },
+          {
+            name: "כוס יין",
+            description: "מבחר יינות לבחירה",
+            price: 50,
+            image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSD_O-7VEdY_FjR5zNxEXbr4UgeMukQzshceA&s"
+          }
+        ]
+      }
+    ];
+
+    function saveCart() {
+      localStorage.setItem(cartKey, JSON.stringify(cart));
+      renderCart();
+    }
+
+    function addToCart(name, price) {
+      cart.push({ name, price });
+      saveCart();
+    }
+
+    function removeFromCart(index) {
+      cart.splice(index, 1);
+      saveCart();
+    }
+
+    function clearCart() {
+      cart = [];
+      saveCart();
+    }
+
+    function renderCart() {
+      const cartList = document.getElementById("cart-list");
+      const total = document.getElementById("total");
+      cartList.innerHTML = "";
+      let sum = 0;
+      cart.forEach((item, index) => {
+        const li = document.createElement("li");
+        li.innerHTML = `${item.name} - ₪${item.price} <button onclick="removeFromCart(${index})">x</button>`;
+        cartList.appendChild(li);
+        sum += item.price;
+      });
+      total.textContent = sum;
+    }
+
+
+    async function loadDbMeals() {
+      try {
+        const res = await fetch('http://localhost:3000/meals');
+        dbMeals = await res.json();
+      } catch (err) {
+        console.error('שגיאה בטעינת מנות ממסד הנתונים:', err);
+        dbMeals = [];
+      }
+    }
+
+
+    function getDbMeal(mealName) {
+      console.log('מחפש מנה:', mealName);
+      console.log('מנות זמינות במסד נתונים:', dbMeals.map(m => m.name));
+      return dbMeals.find(meal => meal.name === mealName || meal.name.includes(mealName) || mealName.includes(meal.name));
+    }
+
+    function renderMenu() {
+      const container = document.getElementById("menu-container");
+      container.innerHTML = "";
+      const newMeals = JSON.parse(localStorage.getItem(newMealsKey)) || [];
+
+      const allMenu = JSON.parse(JSON.stringify(staticMenu));
+      newMeals.forEach(meal => {
+        let section = allMenu.find(s => s.category === meal.category);
+        if (!section) {
+          section = { category: meal.category, items: [] };
+          allMenu.push(section);
+        }
+        section.items.push(meal);
+      });
+
+      allMenu.forEach(section => {
+        const h2 = document.createElement("h2");
+        h2.textContent = section.category;
+        container.appendChild(h2);
+
+        section.items.forEach(meal => {
+          const dbMeal = getDbMeal(meal.name);
+          const isDiscounted = dbMeal && dbMeal.is_discounted;
+          const currentPrice = dbMeal ? dbMeal.price : meal.price;
+          const originalPrice = dbMeal ? dbMeal.original_price : meal.price;
+
+          console.log(`מנה: ${meal.name}, נמצאה במסד נתונים: ${!!dbMeal}, הנחה: ${isDiscounted}`);
+
+          const itemDiv = document.createElement("div");
+          itemDiv.className = "menu-item";
+
+          let priceHtml = '';
+          if (isDiscounted) {
+            priceHtml = `
+              <div class="original-price">₪${originalPrice}</div>
+              <div class="discounted-price">₪${currentPrice}</div>
+            `;
+          } else {
+            priceHtml = `<div>₪${currentPrice}</div>`;
+          }
+
+          itemDiv.innerHTML = `
+            <img src="${meal.image}" alt="${meal.name}" />
+            <div class="item-info">
+              <h3>${meal.name}</h3>
+              <p>${meal.description}</p>
+            </div>
+            <div class="item-price">${priceHtml}</div>
+            <button onclick="addToCart(\`${meal.name}\`, ${currentPrice})">הוסף לסל</button>
+          `;
+          container.appendChild(itemDiv);
+        });
+      });
+    }
+
+
+    async function loadMeals() {
+      try {
+        const res = await fetch('http://localhost:3000/meals');
+        const meals = await res.json();
+        const tbody = document.getElementById('discount-table-body');
+        tbody.innerHTML = '';
+
+        meals.forEach(meal => {
+          const tr = document.createElement('tr');
+          tr.innerHTML = `
+            <td>${meal.name}</td>
+            <td>₪${meal.price}</td>
+            <td style="color:${meal.is_discounted ? 'green' : 'red'}">
+              ${meal.is_discounted ? '✔' : '✘'}
+            </td>
+            <td>
+              <button onclick="toggleDiscount(${meal.id})">
+                ${meal.is_discounted ? 'ביטול ' : 'הפעלה '}
+              </button>
+            </td>
+          `;
+          tbody.appendChild(tr);
+        });
+      } catch (err) {
+        console.error('שגיאה בטעינת מנות:', err);
+      }
+    }
+
+    async function toggleDiscount(id) {
+      try {
+        await fetch('http://localhost:3000/toggle-discount', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ id })
+        });
+
+
+        await loadDbMeals();
+        await loadMeals();
+        renderMenu();
+      } catch (err) {
+        console.error('שגיאה בעדכון הנחה:', err);
+      }
+    }
+
+
+    document.addEventListener("DOMContentLoaded", async () => {
+      await loadDbMeals();
+      await loadMeals();
+      renderMenu();
+      renderCart();
+    });
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="he">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>add meal</title>
+  <style>
+    body {
+      direction: rtl;
+      font-family: Arial, sans-serif;
+      background-color: #f3f3f3;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin: 0;
+      min-height: 100vh;
+    }
+
+    .container {
+      background-color: #fff;
+      padding: 25px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      width: 600px;
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 5px;
+    }
+
+    label {
+      margin-top: 10px;
+      display: block;
+      font-weight: bold;
+    }
+
+    input,
+    select,
+    textarea,
+    button {
+      width: 100%;
+      padding: 8px;
+      margin-top: 5px;
+      margin-bottom: 15px;
+      box-sizing: border-box;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 14px;
+    }
+
+    button {
+      background-color: #ff7043;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #e65c32;
+    }
+
+    table {
+      border: 1px solid #ccc;
+      border-collapse: collapse;
+      margin-top: 30px;
+      width: 100%;
+      background-color: #fff;
+    }
+
+    th,
+    td {
+      border: 1px solid #ccc;
+      padding: 10px;
+      text-align: center;
+      font-size: 14px;
+    }
+
+    th {
+      background-color: #f2f2f2;
+    }
+
+    img {
+      max-width: 80px;
+      border-radius: 6px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="container">
+    <h2>הוספת מנה חדשה</h2>
+
+    <form id="mealForm">
+      <label>שם המנה:</label>
+      <input type="text" id="name" required pattern="^[\u0590-\u05FF\s]+$" title="עברית בלבד">
+
+      <label>קטגוריה:</label>
+      <select id="category" required>
+        <option value="">בחר קטגוריה</option>
+        <option>מנות ראשונות</option>
+        <option>מנות עיקריות</option>
+        <option>קינוחים</option>
+        <option>שתייה</option>
+      </select>
+
+      <label>מחיר:</label>
+      <input type="text" id="price" required pattern="^\d+$" title="ספרות בלבד">
+
+      <label>תיאור המנה:</label>
+      <input type="text" id="description" required pattern="^[\u0590-\u05FFa-zA-Z\s]+$" title="עברית ואנגלית בלבד">
+
+      <label>כתובת תמונה (URL):</label>
+      <input type="text" id="image" required>
+
+      <button type="submit">הוסף מנה</button>
+    </form>
+
+    <table id="menuTable" style="display: none;">
+      <thead>
+        <tr>
+          <th>שם</th>
+          <th>קטגוריה</th>
+          <th>מחיר</th>
+          <th>תיאור</th>
+          <th>תמונה</th>
+          <th>הסר</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </div>
+
+  <script>
+    const storageKey = "burger_restaurant_meals";
+
+    function loadMeals() {
+      const data = localStorage.getItem(storageKey);
+      return data ? JSON.parse(data) : [];
+    }
+
+    function saveMeals(meals) {
+      localStorage.setItem(storageKey, JSON.stringify(meals));
+    }
+
+    function showMeals() {
+      const meals = loadMeals();
+      const tbody = document.querySelector("#menuTable tbody");
+      tbody.innerHTML = "";
+
+      meals.forEach((meal, index) => {
+        const row = document.createElement("tr");
+        row.innerHTML = `
+        <td>${meal.name}</td>
+        <td>${meal.category}</td>
+        <td>₪${meal.price}</td>
+        <td>${meal.description}</td>
+        <td><img src="${meal.image}" alt="meal image" /></td>
+        <td><button onclick="removeMeal(${index})">X</button></td>
+      `;
+        tbody.appendChild(row);
+      });
+
+      document.getElementById("menuTable").style.display = meals.length ? "table" : "none";
+    }
+
+    function removeMeal(index) {
+      const meals = loadMeals();
+      meals.splice(index, 1);
+      saveMeals(meals);
+      showMeals();
+    }
+
+    document.getElementById("mealForm").addEventListener("submit", function (event) {
+      event.preventDefault();
+
+      const name = document.getElementById("name").value.trim();
+      const category = document.getElementById("category").value;
+      const price = parseInt(document.getElementById("price").value.trim());
+      const description = document.getElementById("description").value.trim();
+      const image = document.getElementById("image").value.trim();
+
+      const meals = loadMeals();
+      const exists = meals.some(m => m.name === name && m.category === category);
+      if (exists) {
+        alert("המנה כבר קיימת.");
+        return;
+      }
+
+      meals.push({ name, category, price, description, image });
+      saveMeals(meals);
+      showMeals();
+      this.reset();
+    });
+
+    document.addEventListener("DOMContentLoaded", showMeals);
+  </script>
+
+</body>
+
+</html>

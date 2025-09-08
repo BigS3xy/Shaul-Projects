@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>login</title>
+
+    <style>
+        body {
+            background-color: #f1efefed; 
+            font-family: Arial;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+        }
+    
+        h1 {
+            color: #56391b; 
+            margin-top: 35px;
+        }
+    
+        .login-button {
+            display: block; 
+            margin: 20px auto 0; 
+            background-color: #f1674c;
+            color: white;
+            text-decoration: none;
+            border: none;
+            padding: 10px 25px;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+
+        .login-button:hover {
+            background-color: #d7553b;
+        }
+
+        
+        form {
+            background-color: white;
+            max-width: 400px;
+            margin: 40px auto;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            text-align: right; 
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        input[type="text"],
+        input[type="password"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+            font-size: 16px;
+            box-sizing: border-box;
+        }
+    </style>
+
+</head>
+
+<body>
+
+<header>
+    <h1>התחברות</h1>
+</header>
+
+<main>
+    <form id="loginForm">
+        <label for="username">שם משתמש:</label>
+        <input type="text" id="username" required>
+    
+        <label for="password">סיסמה:</label>
+        <input type="password" id="password" required>
+    
+        <button type="submit" class="login-button">התחבר</button>
+    
+        <div id="error" class="error"></div>
+      </form>
+    
+</main>
+
+<script>
+    document.getElementById("loginForm").addEventListener("submit", function(event) {
+      event.preventDefault();
+
+      const username = document.getElementById("username").value.trim();
+      const password = document.getElementById("password").value.trim();
+      const errorDiv = document.getElementById("error");
+
+      const users = {
+        "Yossi": "Yossi2025",
+        "Dana": "Dana2025",
+        "Rami": "Rami2025"
+      };
+
+      if (users[username] === password) {
+        window.location.href = username.toLowerCase() + ".html";
+      } else {
+        errorDiv.textContent = "שם משתמש או סיסמה שגויים";
+      }
+    });
+  </script>
+
+
+
+</body>
+</html>

@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>תפריט מקסיקני</title>
+  <style>
+    body {
+      background-color: #fdf6ec;
+      font-family: Arial;
+      margin: 0;
+      padding: 0;
+      color: #333;
+    }
+
+    header {
+      background-color: #fdf6ec;
+      padding: 20px;
+      text-align: center;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    h1 {
+      margin: 0;
+      color: #b9482e;
+      font-size: 26px;
+    }
+
+    .menu-section {
+      max-width: 800px;
+      margin: 20px auto;
+      padding: 0 15px;
+    }
+
+    h2 {
+      color: #b9482e;
+      border-bottom: 1px solid #ccc;
+      padding-bottom: 5px;
+      margin: 25px 0 10px;
+    }
+
+    .menu-item {
+      display: flex;
+      align-items: center;
+      margin-bottom: 12px;
+      background-color: #fff;
+      padding: 8px;
+      border-radius: 10px;
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .menu-item img {
+      width: 80px;
+      height: 80px;
+      object-fit: cover;
+      border-radius: 8px;
+      margin-left: 12px;
+    }
+
+    .item-info {
+      flex: 1;
+    }
+
+    .item-info h3 {
+      margin: 0;
+      font-size: 16px;
+      color: #3b3b3b;
+    }
+
+    .item-info p {
+      margin: 4px 0 0;
+      font-size: 13px;
+      color: #666;
+    }
+
+    .item-price {
+      font-weight: bold;
+      color: #f1674c;
+      font-size: 14px;
+      margin-right: 10px;
+    }
+
+    .menu-item button {
+      margin-right: 10px;
+      background-color: #b9482e;
+      color: white;
+      border: none;
+      padding: 6px 10px;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    .cart {
+      max-width: 800px;
+      margin: 20px auto;
+      padding: 10px;
+      background: #fff;
+      border-radius: 10px;
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .cart ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    .cart li {
+      display: flex;
+      justify-content: space-between;
+      margin: 6px 0;
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <h1>תפריט מקסיקני</h1>
+  </header>
+
+  <div class="menu-section" id="menu-section"></div>
+
+  <div class="cart">
+    <h2>🛒 סל קניות</h2>
+    <ul id="cart-list"></ul>
+    <p>סה"כ: ₪<span id="total">0</span></p>
+    <button onclick="clearCart()">רוקן סל</button>
+  </div>
+
+  <div style="text-align: center; margin: 20px;">
+    <a href="addMeal_mexican.html" style="
+    display: inline-block;
+    background-color: #b9482e;
+    color: white;
+    padding: 10px 20px;
+    font-size: 14px;
+    border-radius: 6px;
+    text-decoration: none;
+    transition: 0.3s;
+  ">הוספת מנה לתפריט</a>
+  </div>
+
+
+  <script>
+    const restaurant = "mexican_restaurant";
+    const newMealsKey = "mexican_restaurant_meals";
+    let cart = JSON.parse(localStorage.getItem(restaurant)) || [];
+
+    const staticData = [
+      {
+        name: "כנפיים של חופש",
+        category: "מנות ראשונות",
+        price: 28,
+        description: "מבחר כנפיים טעימות בטיבול מקסיקני!",
+        image: "https://th.bing.com/th/id/R.6e38c3cfea52e3b71f65bd5c45e396a9?rik=n%2bV58vENEfCf%2fg&riu=http%3a%2f%2fwww.10dakot.co.il%2fwp-content%2fuploads%2f2017%2f07%2f%d7%9b%d7%a0%d7%a4%d7%99%d7%99%d7%9d-%d7%91%d7%aa%d7%a0%d7%95%d7%a8.jpg&ehk=zcODY803Y0qdNNPco7J8OQ9zwF%2bMU2cLEICA%2fN1o5YQ%3d&risl=&pid=ImgRaw&r=0"
+      },
+
+      {
+        name: "אינצ'ילדות מיני",
+        category: "מנות ראשונות",
+        price: 30,
+        description: "אינצלדה פריך במילוי בשר בקר טחון, מתכון סודי כמובן",
+        image: "https://medias.hashulchan.co.il/www/uploads/2015/12/650_500-458-1140x641.jpg"
+      },
+
+      {
+        name: "בורגר מקסיקני",
+        category: "מנות עיקריות",
+        price: 56,
+        description: "200 גרם בשר מובחר בטיבול מקסיקני",
+        image: "https://files.mishloha.co.il/files/menu_food_pic/FIL_6056353_1640254454216.jpg"
+      },
+
+      {
+        name: "טורטיית אל צ'אפו",
+        category: "מנות עיקריות",
+        price: 60,
+        description: "טורטיה עם ירקות ומצרכים מקסיקניים, אופציה טבעונית",
+        image: "https://www.starkist.co.il/wp-content/uploads/2018/11/%D7%9E%D7%AA%D7%9B%D7%95%D7%A0%D7%99-%D7%91%D7%A8%D7%99%D7%90%D7%95%D7%AA-%D7%98%D7%95%D7%A8%D7%98%D7%99%D7%94-%D7%98%D7%95%D7%A0%D7%94.jpg"
+      },
+
+      {
+        name: "טירמיסו",
+        category: "קינוחים",
+        price: 49,
+        description: "שכבות ביסקוטי, אספרסו, קרם מסקרפונה וקקאו",
+        image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT-VTn8kr8vqAEgT1vT4dMFcSdBw167UmlFDA&s1"
+      },
+
+      {
+        name: "קרם ברולה",
+        category: "קינוחים",
+        price: 51,
+        description: "קרם וניל ודבש עם שקדים וטראפל אגוזים",
+        image: "https://i.pinimg.com/736x/57/02/68/570268f903c15f2857f8eb29d81cc3f7.jpg"
+      },
+
+      {
+        name: "שתיה קלה",
+        category: "שתייה",
+        price: 10,
+        description: "מגוון סוגים לבחירה",
+        image: "https://mosheamar.co.il/wp-content/uploads/2022/06/iced-cola-glass-1.jpg"
+      },
+
+      {
+        name: "כוס יין",
+        category: "שתייה",
+        price: 50,
+        description: "מבחר יינות משובחים",
+        image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSD_O-7VEdY_FjR5zNxEXbr4UgeMukQzshceA&s"
+      }
+    ];
+
+    function saveCart() {
+      localStorage.setItem(restaurant, JSON.stringify(cart));
+      renderCart();
+    }
+
+    function addToCart(name, price) {
+      cart.push({ name, price });
+      saveCart();
+    }
+
+    function removeFromCart(index) {
+      cart.splice(index, 1);
+      saveCart();
+    }
+
+    function clearCart() {
+      cart = [];
+      saveCart();
+    }
+
+    function renderCart() {
+      const cartList = document.getElementById("cart-list");
+      const total = document.getElementById("total");
+      cartList.innerHTML = "";
+      let sum = 0;
+      cart.forEach((item, index) => {
+        const li = document.createElement("li");
+        li.innerHTML = `${item.name} - ₪${item.price} <button onclick="removeFromCart(${index})">x</button>`;
+        cartList.appendChild(li);
+        sum += item.price;
+      });
+      total.textContent = sum;
+    }
+
+    function renderMenu() {
+      const allMeals = [...staticData, ...(JSON.parse(localStorage.getItem(newMealsKey)) || [])];
+      const section = document.getElementById("menu-section");
+      const grouped = {};
+
+      allMeals.forEach(meal => {
+        if (!grouped[meal.category]) grouped[meal.category] = [];
+        grouped[meal.category].push(meal);
+      });
+
+      section.innerHTML = "";
+      for (const category in grouped) {
+        const h2 = document.createElement("h2");
+        h2.textContent = category;
+        section.appendChild(h2);
+
+        grouped[category].forEach(meal => {
+          const div = document.createElement("div");
+          div.className = "menu-item";
+          div.innerHTML = `
+              <img src="${meal.image}" alt="${meal.name}">
+              <div class="item-info">
+                <h3>${meal.name}</h3>
+                <p>${meal.description}</p>
+              </div>
+              <div class="item-price">₪${meal.price}</div>
+              <button onclick="addToCart('${meal.name}', ${meal.price})">הוסף לסל</button>
+            `;
+          section.appendChild(div);
+        });
+      }
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      renderMenu();
+      renderCart();
+    });
+  </script>
+</body>
+
+</html>

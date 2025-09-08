@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>תפריט סושי</title>
+  <style>
+    body {
+      background-color: #fff8f0;
+      font-family: "Segoe UI", Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      color: #2c2c2c;
+      line-height: 1.6;
+    }
+
+    header {
+      background-color: #ffcb05;
+      padding: 20px;
+      text-align: center;
+      color: #1a1a1a;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 32px;
+    }
+
+    h2 {
+      font-size: 24px;
+      color: #1a1a1a;
+      border-bottom: 2px solid #ffcb05;
+      padding-bottom: 6px;
+      margin: 40px 0 20px;
+      text-align: center;
+    }
+
+    .menu-section {
+      max-width: 1000px;
+      margin: auto;
+      padding: 20px;
+    }
+
+    .menu-item {
+      display: flex;
+      gap: 20px;
+      margin-bottom: 30px;
+      background-color: #fff;
+      padding: 16px;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      align-items: center;
+    }
+
+    .menu-item img {
+      width: 120px;
+      height: 120px;
+      object-fit: cover;
+      border-radius: 10px;
+      box-shadow: 0 1px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .item-info {
+      flex: 1;
+    }
+
+    .item-info h3 {
+      margin: 0 0 5px;
+      font-size: 18px;
+      color: #222;
+    }
+
+    .item-info p {
+      margin: 0;
+      font-size: 14px;
+      color: #555;
+    }
+
+    .item-price {
+      font-weight: bold;
+      font-size: 18px;
+      color: #e53935;
+      min-width: 60px;
+    }
+
+    .menu-item button {
+      margin-right: 10px;
+      background-color: #e53935;
+      color: white;
+      border: none;
+      padding: 6px 10px;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    .cart {
+      max-width: 1000px;
+      margin: 20px auto;
+      padding: 10px;
+      background: #fff;
+      border-radius: 10px;
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .cart ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    .cart li {
+      display: flex;
+      justify-content: space-between;
+      margin: 6px 0;
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <h1>תפריט סושי</h1>
+  </header>
+
+  <div class="menu-section" id="menu-section"></div>
+
+  <div class="cart">
+    <h2>🛒 סל קניות</h2>
+    <ul id="cart-list"></ul>
+    <p>סה"כ: ₪<span id="total">0</span></p>
+    <button onclick="clearCart()">רוקן סל</button>
+  </div>
+
+  <div style="text-align: center; margin: 20px;">
+    <a href="addMeal_sushi.html" style="
+      display: inline-block;
+      background-color: #e53935;
+      color: white;
+      padding: 10px 20px;
+      font-size: 14px;
+      border-radius: 6px;
+      text-decoration: none;
+      transition: 0.3s;
+    ">הוספת מנה לתפריט</a>
+  </div>
+
+  <script>
+    const restaurant = "sushi_restaurant";
+    const newMealsKey = "sushi_restaurant_meals";
+    let cart = JSON.parse(localStorage.getItem(restaurant)) || [];
+
+    const staticData = [
+      {
+        name: "כנפיים של יפן",
+        category: "מנות ראשונות",
+        price: 28,
+        description: "כנפיים בטיבול אסיאתי יפני",
+        image: "https://th.bing.com/th/id/R.6e38c3cfea52e3b71f65bd5c45e396a9?rik=n%2bV58vENEfCf%2fg&riu=http%3a%2f%2fwww.10dakot.co.il%2fwp-content%2fuploads%2f2017%2f07%2f%d7%9b%d7%a0%d7%a4%d7%99%d7%99%d7%9d-%d7%91%d7%aa%d7%a0%d7%95%d7%a8.jpg&ehk=zcODY803Y0qdNNPco7J8OQ9zwF%2bMU2cLEICA%2fN1o5YQ%3d&risl=&pid=ImgRaw&r=0"
+      },
+
+      {
+        name: "רולים לפתיחה",
+        category: "מנות ראשונות",
+        price: 30,
+        description: "לבחירה: 3 ירקות וסוג דג",
+        image: "https://www.laravakot.co.il/wp-content/uploads/2015/03/%D7%A8%D7%95%D7%9C-%D7%A1%D7%95%D7%A9%D7%99-%D7%9C%D7%9E%D7%A1%D7%99%D7%91%D7%AA-%D7%A8%D7%95%D7%95%D7%A7%D7%95%D7%AA.jpg"
+      },
+
+      {
+        name: "בורגר באן",
+        category: "מנות עיקריות",
+        price: 56,
+        description: "בשר בטיבול אסיאתי בבאן",
+        image: "https://japanika.net/wp-content/uploads/2024/03/%D7%91%D7%90%D7%9F-%D7%91%D7%95%D7%A8%D7%92%D7%A8_.png"
+      },
+
+      {
+        name: "פאד תאי",
+        category: "מנות עיקריות",
+        price: 60,
+        description: "איטריות אורז או ביצים עם ירקות",
+        image: "https://cdn-a.prisma.de/cdn/img/default/3957/39569171_28bd0edfc4749998bbb520c750b5d78d_1280re0.jpg"
+      },
+
+      {
+        name: "טירמיסו",
+        category: "קינוחים",
+        price: 49,
+        description: "ביסקוטי, אספרסו, קרם מסקרפונה",
+        image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT-VTn8kr8vqAEgT1vT4dMFcSdBw167UmlFDA&s1"
+      },
+
+      {
+        name: "קרם ברולה",
+        category: "קינוחים",
+        price: 51,
+        description: "וניל ודבש, שקדים וטראפל אגוזים",
+        image: "https://i.pinimg.com/736x/57/02/68/570268f903c15f2857f8eb29d81cc3f7.jpg"
+      },
+
+      {
+        name: "שתיה קלה",
+        category: "שתייה",
+        price: 10,
+        description: "מגוון סוגים לבחירה",
+        image: "https://mosheamar.co.il/wp-content/uploads/2022/06/iced-cola-glass-1.jpg"
+      },
+
+      {
+        name: "כוס יין",
+        category: "שתייה",
+        price: 50,
+        description: "מבחר יינות משובחים",
+        image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSD_O-7VEdY_FjR5zNxEXbr4UgeMukQzshceA&s"
+      }
+    ];
+
+    function saveCart() {
+      localStorage.setItem(restaurant, JSON.stringify(cart));
+      renderCart();
+    }
+
+    function addToCart(name, price) {
+      cart.push({ name, price });
+      saveCart();
+    }
+
+    function removeFromCart(index) {
+      cart.splice(index, 1);
+      saveCart();
+    }
+
+    function clearCart() {
+      cart = [];
+      saveCart();
+    }
+
+    function renderCart() {
+      const cartList = document.getElementById("cart-list");
+      const total = document.getElementById("total");
+      cartList.innerHTML = "";
+      let sum = 0;
+      cart.forEach((item, index) => {
+        const li = document.createElement("li");
+        li.innerHTML = `${item.name} - ₪${item.price} <button onclick="removeFromCart(${index})">x</button>`;
+        cartList.appendChild(li);
+        sum += item.price;
+      });
+      total.textContent = sum;
+    }
+
+    function renderMenu() {
+      const allMeals = [...staticData, ...(JSON.parse(localStorage.getItem(newMealsKey)) || [])];
+      const section = document.getElementById("menu-section");
+      const grouped = {};
+
+      allMeals.forEach(meal => {
+        if (!grouped[meal.category]) grouped[meal.category] = [];
+        grouped[meal.category].push(meal);
+      });
+
+      section.innerHTML = "";
+      for (const category in grouped) {
+        const h2 = document.createElement("h2");
+        h2.textContent = category;
+        section.appendChild(h2);
+
+        grouped[category].forEach(meal => {
+          const div = document.createElement("div");
+          div.className = "menu-item";
+          div.innerHTML = `
+            <img src="${meal.image}" alt="${meal.name}">
+            <div class="item-info">
+              <h3>${meal.name}</h3>
+              <p>${meal.description}</p>
+            </div>
+            <div class="item-price">₪${meal.price}</div>
+            <button onclick="addToCart('${meal.name}', ${meal.price})">הוסף לסל</button>
+          `;
+          section.appendChild(div);
+        });
+      }
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      renderMenu();
+      renderCart();
+    });
+  </script>
+</body>
+
+</html>

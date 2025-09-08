@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>תפריט</title>
+  <style>
+    body {
+      background-color: #e8d4b0;
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      color: #2f2f2f;
+    }
+
+    header {
+      background-color: #e8d4b0;
+      padding: 20px;
+      text-align: center;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 30px;
+      color: #4d3628;
+    }
+
+    h2 {
+      font-size: 22px;
+      color: #4d3628;
+      border-bottom: 1px solid #bfa78a;
+      padding-bottom: 6px;
+      margin: 40px 0 20px;
+      text-align: right;
+      padding-right: 20px;
+    }
+
+    .menu-section {
+      max-width: 1000px;
+      margin: auto;
+      padding: 20px;
+    }
+
+    .menu-item {
+      display: flex;
+      gap: 20px;
+      margin-bottom: 30px;
+      background-color: #fff8f0;
+      padding: 16px;
+      border-radius: 12px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+      align-items: center;
+    }
+
+    .menu-item img {
+      width: 100px;
+      height: 100px;
+      object-fit: cover;
+      border-radius: 10px;
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .item-info {
+      flex: 1;
+    }
+
+    .item-info h3 {
+      margin: 0 0 5px;
+      font-size: 18px;
+      color: #3b2f2f;
+    }
+
+    .item-info p {
+      margin: 0;
+      font-size: 14px;
+      color: #5a4a44;
+    }
+
+    .item-price {
+      font-weight: bold;
+      font-size: 18px;
+      color: #b84a2b;
+      min-width: 60px;
+    }
+
+    .cart {
+      max-width: 1000px;
+      margin: 30px auto;
+      padding: 20px;
+      background: #fff8f0;
+      border-radius: 12px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .cart ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    .cart li {
+      display: flex;
+      justify-content: space-between;
+      margin: 8px 0;
+    }
+
+    button {
+      background-color: #b84a2b;
+      color: white;
+      border: none;
+      padding: 6px 12px;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    button:hover {
+      background-color: #96371f;
+    }
+
+    .add-button-container {
+      text-align: center;
+      margin: 30px;
+    }
+
+    .add-button-container a {
+      display: inline-block;
+      background-color: #96371f;
+      color: white;
+      padding: 12px 24px;
+      font-size: 16px;
+      border-radius: 8px;
+      text-decoration: none;
+      transition: background-color 0.3s;
+    }
+
+    .add-button-container a:hover {
+      background-color: #652515;
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <h1>תפריט</h1>
+  </header>
+
+  <div class="menu-section" id="menu-container"></div>
+
+  <div class="cart">
+    <h2>🛒 סל קניות</h2>
+    <ul id="cart-list"></ul>
+    <p>סה"כ: ₪<span id="total">0</span></p>
+    <button onclick="clearCart()">רוקן סל</button>
+  </div>
+
+  <div class="add-button-container">
+    <a href="addMeal_meat.html">הוספת מנה לתפריט</a>
+  </div>
+
+  <script>
+    const cartKey = "meat_cart";
+    const newMealsKey = "meat_restaurant_meals";
+    let cart = JSON.parse(localStorage.getItem(cartKey)) || [];
+
+    function saveCart() {
+      localStorage.setItem(cartKey, JSON.stringify(cart));
+      renderCart();
+    }
+
+    function addToCart(name, price) {
+      cart.push({ name, price });
+      saveCart();
+    }
+
+    function removeFromCart(index) {
+      cart.splice(index, 1);
+      saveCart();
+    }
+
+    function clearCart() {
+      cart = [];
+      saveCart();
+    }
+
+    function renderCart() {
+      const cartList = document.getElementById("cart-list");
+      const total = document.getElementById("total");
+      cartList.innerHTML = "";
+      let sum = 0;
+      cart.forEach((item, index) => {
+        const li = document.createElement("li");
+        li.innerHTML = `${item.name} - ₪${item.price} <button onclick="removeFromCart(${index})">x</button>`;
+        cartList.appendChild(li);
+        sum += item.price;
+      });
+      total.textContent = sum;
+    }
+
+    const staticData = [
+      {
+        category: "מנות ראשונות",
+        items: [
+          {
+            name: "כנפיים של קרניבור",
+            description: "מבחר כנפיים בטיבול ביתי!",
+            price: 28,
+            image: "https://th.bing.com/th/id/R.6e38c3cfea52e3b71f65bd5c45e396a9?rik=n%2bV58vENEfCf%2fg&riu=http%3a%2f%2fwww.10dakot.co.il%2fwp-content%2fuploads%2f2017%2f07%2f%d7%9b%d7%a0%d7%a4%d7%99%d7%99%d7%9d-%d7%91%d7%aa%d7%a0%d7%95%d7%a8.jpg&ehk=zcODY803Y0qdNNPco7J8OQ9zwF%2bMU2cLEICA%2fN1o5YQ%3d&risl=&pid=ImgRaw&r=0"
+          },
+          {
+            name: "נקנקיות מרגז",
+            description: "שלושה סוגים עם כרוב כבוש",
+            price: 30,
+            image: "https://tse4.mm.bing.net/th/id/OIP.KOVN48KJqbe1wjKtKCKZaQHaE8"
+          }
+        ]
+      },
+      {
+        category: "מנות עיקריות",
+        items: [
+          {
+            name: "בורגר של גדולים",
+            description: "500 גרם בשר מובחר בטיבול ביתי",
+            price: 96,
+            image: "https://files.mishloha.co.il/files/menu_food_pic/FIL_6056353_1640254454216.jpg"
+          },
+          {
+            name: "פלטת בשרים של העליון",
+            description: "קילו של בשרים לבחירה",
+            price: 260,
+            image: "https://cdn.groo.co.il/_media/media/83468/524388.jpg"
+          }
+        ]
+      },
+      {
+        category: "קינוחים",
+        items: [
+          {
+            name: "טירמיסו",
+            description: "ביסקוטי ספוג אספרסו וקרם מסקרפונה",
+            price: 49,
+            image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT-VTn8kr8vqAEgT1vT4dMFcSdBw167UmlFDA&s1"
+          },
+          {
+            name: "קרם ברולה",
+            description: "וניל ודבש עם טוויל שקדים ואגוזים",
+            price: 51,
+            image: "https://i.pinimg.com/736x/57/02/68/570268f903c15f2857f8eb29d81cc3f7.jpg"
+          }
+        ]
+      },
+      {
+        category: "שתייה",
+        items: [
+          {
+            name: "שתיה קלה",
+            description: "לבחירה",
+            price: 10,
+            image: "https://mosheamar.co.il/wp-content/uploads/2022/06/iced-cola-glass-1.jpg"
+          },
+          {
+            name: "כוס יין",
+            description: "מבחר יינות לבחירה",
+            price: 50,
+            image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSD_O-7VEdY_FjR5zNxEXbr4UgeMukQzshceA&s"
+          }
+        ]
+      }
+    ];
+
+    function renderMenu() {
+      const container = document.getElementById("menu-container");
+      container.innerHTML = "";
+      const sections = {};
+
+      staticData.forEach(section => {
+        sections[section.category] = section.items.slice();
+      });
+
+      const newMeals = JSON.parse(localStorage.getItem(newMealsKey)) || [];
+      newMeals.forEach(meal => {
+        if (!sections[meal.category]) sections[meal.category] = [];
+        sections[meal.category].push(meal);
+      });
+
+      for (const category in sections) {
+        const h2 = document.createElement("h2");
+        h2.textContent = category;
+        container.appendChild(h2);
+
+        sections[category].forEach(meal => {
+          const item = document.createElement("div");
+          item.className = "menu-item";
+          item.innerHTML = `
+            <img src="${meal.image}" alt="${meal.name}" />
+            <div class="item-info">
+              <h3>${meal.name}</h3>
+              <p>${meal.description}</p>
+            </div>
+            <div class="item-price">₪${meal.price}</div>
+            <button onclick="addToCart('${meal.name}', ${meal.price})">הוסף לסל</button>
+          `;
+          container.appendChild(item);
+        });
+      }
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      renderCart();
+      renderMenu();
+    });
+  </script>
+</body>
+
+</html>
